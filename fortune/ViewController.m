@@ -21,6 +21,8 @@
     
     NSString *fortune = [[FortuneManager sharedManager] currentFortune] ;
     ((UILabel *)[self.view viewWithTag:1]).text = fortune ;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fortuneChanged:) name:@"FORTUNE_CHANGED" object:nil] ;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,6 +49,15 @@
 
     NSDictionary<NSString *, NSString *> *dict = @{@"fortune" : fortune} ;
     [wcsession updateApplicationContext:dict error:nil] ;
+}
+
+- (void)fortuneChanged:(NSNotification *)notification {
+    if (notification.userInfo) {
+        NSString *fortune = [notification.userInfo objectForKey:@"fortune"] ;
+        if (fortune) {
+            ((UILabel *)[self.view viewWithTag:1]).text = fortune ;
+        }
+    }
 }
 
 @end

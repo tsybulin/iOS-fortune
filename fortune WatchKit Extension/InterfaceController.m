@@ -8,6 +8,7 @@
 
 #import "InterfaceController.h"
 #import "FortuneManager.h"
+#import <WatchConnectivity/WatchConnectivity.h>
 // #import <ClockKit/ClockKit.h>
 
 @interface InterfaceController()
@@ -46,6 +47,14 @@
 //    for(CLKComplication *complication in server.activeComplications) {
 //        [server reloadTimelineForComplication:complication] ;
 //    }
+    
+    if (![WCSession isSupported]) {
+        return ;
+    }
+    
+    WCSession *wcsession = [WCSession defaultSession] ;
+    NSDictionary<NSString *, NSString *> *dict = @{@"fortune": fortune} ;
+    [wcsession updateApplicationContext:dict error:nil] ;
 }
 
 - (void)fortuneChanged:(NSNotification *)notification {

@@ -47,4 +47,13 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - WCSessionDelegate
+- (void)session:(WCSession *)session didReceiveApplicationContext:(NSDictionary<NSString *, NSString *> *)applicationContext {
+    if ([applicationContext objectForKey:@"fortune"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"FORTUNE_CHANGED" object:nil userInfo:applicationContext] ;
+        }) ;
+    }
+}
+
 @end

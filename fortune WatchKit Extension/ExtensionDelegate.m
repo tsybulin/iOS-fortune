@@ -35,7 +35,9 @@
 #pragma mark - WCSessionDelegate
 - (void)session:(WCSession *)session didReceiveApplicationContext:(NSDictionary<NSString *, NSString *> *)applicationContext {
     if ([applicationContext objectForKey:@"fortune"]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"FORTUNE_CHANGED" object:nil userInfo:applicationContext] ;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"FORTUNE_CHANGED" object:nil userInfo:applicationContext] ;
+        }) ;
     }
 }
 
